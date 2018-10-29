@@ -1,0 +1,48 @@
+{% extends 'pastebin/base.html' %}
+{% load static %}
+{% block content %}
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <div class="container">
+    <div class="row">
+        {% if post_object.id > 0 and user.is_authenticated %}
+            <div class = "col">
+                <a class="btn btn-primary" href="{% url 'pastebin:DisplayAllPost' user.id %}" role="button">View Saved Posts</a>
+            </div>
+            <form action="{% url 'pastebin:SavePost' post_object.id %}" method="post">
+            {% csrf_token %}
+                <div class="col">
+                    <textarea name="post_info" rows="10" cols="80">{{post_object.info_from_file}}</textarea>
+                </div>
+                <div class="col"><button class="btn btn-primary" type="submit">UPDATE post</button></div>
+            </form>
+        {% elif post_object.id > 0 %}
+            <form action="{% url 'pastebin:SavenewPost' %}" method="post">
+            {% csrf_token %}
+                <div class="col">
+                    <textarea name="post_info" rows="10" cols="80">{{post_object.info_from_file}}</textarea>
+                </div>
+            </form>
+        {% elif user.is_authenticated %}
+            <div class = "col">
+                <a class="btn btn-primary" href="{% url 'pastebin:DisplayAllPost' user.id %}" role="button">View Saved Posts</a>
+            </div>
+            <form action="{% url 'pastebin:SavenewPost' %}" method="post">
+            {% csrf_token %}
+                <div class="col">
+                    <textarea name="post_info" rows="10" cols="80" placeholder="Your pastebin text here..."></textarea>
+                </div>
+                <div class="col"><button class="btn btn-primary" type="submit">SAVE post</button></div>
+            </form>
+        {% else %}
+            <form action="{% url 'pastebin:SavenewPost' %}" method="post">
+            {% csrf_token %}
+                <div class="col">
+                    <textarea name="post_info" rows="10" cols="80" placeholder="Your pastebin text here..."></textarea>
+                </div>
+                <div class="col"><button class="btn btn-primary" type="submit">SAVE post</button></div>
+            </form>
+        {% endif %}
+    </div>
+    </div>
+{% endblock %}

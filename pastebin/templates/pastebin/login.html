@@ -1,0 +1,21 @@
+{% load static %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{%if user.is_authenticated %}
+Uuser data:{{user}} </br>
+    You are logged in as {% if user.first_name|length > 0 %} {{ user.first_name }} {{ user.last_name }} 
+    {% else %} {{ user.username }} 
+    {% endif %}
+
+{% else %}
+user data:{{user}} </br>
+<form action="{% url 'pastebin:LoginUser' %}" method="post" data-parsley-validate>
+{% csrf_token %} 
+    Username: <input type="text" name="username" required minlength="5" maxlength="10"> 
+    PassWord: <input type="text" name="password" required minlength="5">
+    <button class="btn btn-primary" type="submit">LOGIN</button>
+    <a class="btn btn-primary" href="{% url 'pastebin:NewUserView' %}" role="button">SIGNUP</a>
+</form>
+
+{% endif %}

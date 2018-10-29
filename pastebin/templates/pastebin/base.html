@@ -1,0 +1,56 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{% static 'parsley.css' %}">
+    <link rel="stylesheet" href="{% static 'pastebin/bootstrap.css' %}" crossorigin="anonymous">
+    <script src="{% static 'jquery.js' %}"></script>
+    <script src="{% static 'parsley.js' %}"></script>
+    <title>Django PASTEBIN</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <h1 class="mt-2">DJANGO PASTEBIN APP</h1>
+          <hr class="mt-0 mb-4">
+            {% if messages %}
+            <ul>
+               {% for message in messages %}
+              <li>
+                 {% if message.level == 50 %}Important: {% endif %}
+                    {{ message }}
+                   {% endfor %}
+              </li>
+            </ul>
+            {% endif %}
+          </hr>
+            <!-- {% if login_error_message %}<p><strong>{{ login_error_message }}</strong></p>{% endif %} -->
+            {% if user.is_authenticated %}
+            <!-- Uuser data:{{user}} --> </br>
+                You are logged in as {% if user.first_name|length > 0 %} {{ user.first_name }} {{ user.last_name }} 
+                {% else %} {{ user.username }} 
+                {% endif %}
+                <a class="btn btn-primary" href="{% url 'pastebin:LogOutView' %}" role="button">LOGOUT</a>
+            {% else %}
+            <!-- user data:{{user}} --> </br>
+              <div class="row">
+                <form action="{% url 'pastebin:LoginUser' %}" method="post" >
+                  {% csrf_token %} 
+                    Username: <input type="text" name="username" required minlength="4" maxlength="10"> 
+                    PassWord: <input type="PassWord" name="password" required minlength="5">
+                    <button class="btn btn-primary" type="submit">LOGIN</button>
+                </form> &nbsp; &nbsp; &nbsp;
+                <a class="btn btn-primary" href="{% url 'pastebin:NewUserView' %}" role="button">SIGNUP</a>
+              </div>
+            {% endif %}
+          </br>
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'parsley.css' %}">
+<link rel="stylesheet" href="{% static 'pastebin/bootstrap.css' %}" crossorigin="anonymous">
+<script src="{% static 'jquery.js' %}"></script>
+<script src="{% static 'parsley.js' %}"></script>
+
+<div class="row justify-content-center">
+    <h1 class="mt-2">DJANGO PASTEBIN APP</h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <form action="{% url 'pastebin:saveNewUser' %}" method="post" >
+            {% csrf_token %}    
+                </br></br>
+                <div class="col">Username: <input type="text" name="username" required minlength="5" maxlength="10"></div>
+                <div class="col">PassWord :<input type="password" name="password" required minlength="5"></div>
+                <div class="col">First Name: <input type="text" name="firstname" required maxlength="10"></div>
+                <div class="col">Last Name: <input type="text" name="lastname" required maxlength="10"></div>
+                <div class="col">Email: <input type="text" name="email" data-parsley-type="email"></div>
+
+                <div class="col"><button class="btn btn-primary" type="submit">Register</button></div>
+            </form>
+        </div>
+    </div>
+</div>
